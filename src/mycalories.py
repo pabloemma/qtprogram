@@ -40,7 +40,7 @@ class MyCalories(object):
                               'calories':[] })
         
         # write data frame to file 
-        self.my_df.to_csv(self.filename,encoding = 'utf-8',index=False) # the index=False makes sure there is no empty starting column where the index would be
+        self.SavePandaFile() # the index=False makes sure there is no empty starting column where the index would be
         return
 
     def CreateEntry(self):
@@ -51,8 +51,12 @@ class MyCalories(object):
         
         self.output = [now.strftime("%d/%m/%Y"),now.strftime("%H:%M:%S")]
         self.my_df.loc[len(self.my_df)]=[self.output[0],self.output[1],self.calories]
-        self.my_df.to_csv(self.filename,encoding = 'utf-8',index=False)
+        self.SavePandaFile()
 
+    def SavePandaFile(self):
+    
+        self.my_df.to_csv(self.filename,encoding = 'utf-8',index=False)
+        return
 
     def GetCurrentCount(self):
         """adds up the current calories for today"""
@@ -71,16 +75,13 @@ class MyCalories(object):
         myindex, mycal = input('give index of entry and value; separated by comma').split(',')
         mycal = int(mycal)
         myindex = int(myindex)
-        print(self.my_df['calories'].iloc[myindex])
         self.my_df['calories'].iloc[myindex]= mycal
-        print(self.my_df['calories'].iloc[myindex])
+        # give new updated count
+        self.GetCurrentCount()
 
-        #self.temp.loc[self.temp['time'] == mytime, 'calories'] = mycal
-        #self.temp.loc[PD.to_datetime(self.temp['time']), 'calories'] = mycal
-        print(self.my_df)
-
+ 
         # now we write the new data base back
-        self.my_df.to_csv(self.filename)
+        self.SavePandaFile()
 
 
         pass
