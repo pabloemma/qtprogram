@@ -58,13 +58,42 @@ class MyCalories(object):
         self.SavePandaFile()
 
     def GetWeight(self):
-        self.weight = float(input("what is your weight today"))
+        self.weight = float(input("what is your weight ?  "))
         return
     
     def SavePandaFile(self):
     
         self.my_df.to_csv(self.filename,encoding = 'utf-8',index=False)
         return
+    
+    def GetMorning(self):
+        """ get the morning calories"""
+
+        index = PD.DatetimeIndex(self.my_df['time'])
+        morning = self.my_df.iloc[index.indexer_between_time('00:00','12:00')]
+        #morning = self.my_df.between_time('17:00','17:11',inclusive ='both')
+        print(morning)
+        return
+
+    def GetAfternoon(self):
+        """ get the morning calories"""
+
+        index = PD.DatetimeIndex(self.my_df['time'])
+        afternoon = self.my_df.iloc[index.indexer_between_time('12:01','18:00')]
+        #morning = self.my_df.between_time('17:00','17:11',inclusive ='both')
+        print(afternoon)
+        return
+    def GetEvening(self):
+        """ get the morning calories"""
+
+        index = PD.DatetimeIndex(self.my_df['time'])
+        evening = self.my_df.iloc[index.indexer_between_time('18:01','23:59')]
+        #morning = self.my_df.between_time('17:00','17:11',inclusive ='both')
+        print(evening)
+        return
+       
+
+    
 
     def GetCurrentCount(self):
         """adds up the current calories for today"""
@@ -104,6 +133,7 @@ if __name__  == "__main__":
     MyC = MyCalories("/Users/klein/git/qtprogram/data/calories.csv")
 
     MyC.open_file()
+    MyC.GetMorning()
     MyC.CreateEntry()
     MyC.GetCurrentCount()
     MyC.ChangeCalories()
