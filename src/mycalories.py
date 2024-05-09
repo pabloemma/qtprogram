@@ -56,13 +56,17 @@ class MyCalories(object):
     def GetCurrentCount(self):
         """adds up the current calories for today"""
         now=dt.datetime.now()
-        temp = self.my_df[self.my_df['day'] == now.strftime("%d/%m/%Y")]
+        self.temp = temp= self.my_df[self.my_df['day'] == now.strftime("%d/%m/%Y")]
         # now add up all of todays calories
         mysum = temp['calories'].sum()
         print("up to now you have eaten {}".format(mysum))
     
 
         print(temp)
+
+    def ChangeCalories(self):
+        """lets you change an entry based on time"""
+        pass
 
 
 
