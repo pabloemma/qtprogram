@@ -13,6 +13,7 @@ class MyCalories(object):
     def __init__(self,filename = None):
         
         self.filename = Path(filename)
+        PD.options.mode.chained_assignment = None 
         
     def open_file(self): 
 
@@ -66,6 +67,22 @@ class MyCalories(object):
 
     def ChangeCalories(self):
         """lets you change an entry based on time"""
+        print (self.my_df)
+        myindex, mycal = input('give index of entry and value; separated by comma').split(',')
+        mycal = int(mycal)
+        myindex = int(myindex)
+        print(self.my_df['calories'].iloc[myindex])
+        self.my_df['calories'].iloc[myindex]= mycal
+        print(self.my_df['calories'].iloc[myindex])
+
+        #self.temp.loc[self.temp['time'] == mytime, 'calories'] = mycal
+        #self.temp.loc[PD.to_datetime(self.temp['time']), 'calories'] = mycal
+        print(self.my_df)
+
+        # now we write the new data base back
+        self.my_df.to_csv(self.filename)
+
+
         pass
 
 
@@ -80,3 +97,4 @@ if __name__  == "__main__":
     MyC.open_file()
     MyC.CreateEntry()
     MyC.GetCurrentCount()
+    MyC.ChangeCalories()
