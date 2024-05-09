@@ -14,6 +14,9 @@ class MyCalories(object):
         
         self.filename = Path(filename)
         PD.options.mode.chained_assignment = None 
+
+        # before we do anything give your weight
+        self.GetWeight()
         
     def open_file(self): 
 
@@ -37,7 +40,8 @@ class MyCalories(object):
 
         self.my_df = PD.DataFrame({'day':[],
                              'time':[],
-                              'calories':[] })
+                              'calories':[],
+                               'weight':[] })
         
         # write data frame to file 
         self.SavePandaFile() # the index=False makes sure there is no empty starting column where the index would be
@@ -48,11 +52,15 @@ class MyCalories(object):
         self.calories = input("give calories")
         self.calories = int(self.calories)
         now=dt.datetime.now()
-        
+        #self.weight=float(0)
         self.output = [now.strftime("%d/%m/%Y"),now.strftime("%H:%M:%S")]
-        self.my_df.loc[len(self.my_df)]=[self.output[0],self.output[1],self.calories]
+        self.my_df.loc[len(self.my_df)]=[self.output[0],self.output[1],self.calories,self.weight]
         self.SavePandaFile()
 
+    def GetWeight(self):
+        self.weight = float(input("what is your weight today"))
+        return
+    
     def SavePandaFile(self):
     
         self.my_df.to_csv(self.filename,encoding = 'utf-8',index=False)
