@@ -83,6 +83,7 @@ class MyCalories(object):
         #morning = self.my_df.between_time('17:00','17:11',inclusive ='both')
         print(afternoon)
         return
+    
     def GetEvening(self):
         """ get the morning calories"""
 
