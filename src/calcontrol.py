@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
             QGridLayout,
             QMainWindow,
             QDoubleSpinBox,
+            QLineEdit,
             QWidget
 
 )
@@ -47,10 +48,16 @@ class calcontrol(QMainWindow):
         ''' creates a spinner for the weight entry'''
 
         widget  =  QDoubleSpinBox()
+        #widget = QLineEdit()
+        widget.setKeyboardTracking(False) # to ensure we only get a final number
+        #widget.setMouseTracking(True) # have to hit return
+
+
         widget.setMinimum(100.)
         widget.setMaximum(160.)
-        widget.setSingleStep(.1)
-        widget.valueChanged.connect(self.WeightAction)
+        widget.setSingleStep(1.)
+        widget.editingFinished.connect(self.WeightAction) #ensures we only get one signal with hitting return
+        #widget.valueChanged.connect(self.WeightAction)
 
 
         self.weight_widget = widget
@@ -71,8 +78,9 @@ class calcontrol(QMainWindow):
         self.setCentralWidget(self.widget)
 
 
-    def WeightAction(self,weight):
-        print(weight)
+    
+    def WeightAction(self):
+        print(self.weight_widget.value())
 
 
 
