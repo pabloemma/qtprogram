@@ -11,10 +11,16 @@ I will start with an easy example, four widgets in one window
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
             QApplication,
-            QComboBox,
-            QMainWindow
+            QLabel,
+            QGridLayout,
+            QMainWindow,
+            QDoubleSpinBox,
+            QWidget
 
 )
+
+from layout_colorwidget import Color
+
 import os
 import datetime as dt
 from loguru import logger
@@ -27,23 +33,48 @@ class calcontrol(QMainWindow):
         super().__init__()
         
 
-        
+        # set title
         self.setWindowTitle("my calories")
 
-        self.widget = QComboBox()
-        self.widget.addItems(["weight","calories"])
-        self.widget.currentIndexChanged.connect(self.index_changed)
-        self.widget.currentTextChanged.connect(self.index_changed)
+        #setup the different widgets
+        self.CreateWeightBox()
 
-        self.setCentralWidget(self.widget)
+
+        self.SetupLayout()
+
+
+    def CreateWeightBox(self):
+        ''' creates a spinner for the weight entry'''
+
+        widget  =  QDoubleSpinBox()
+        widget.setMinimum(100.)
+        widget.setMaximum(160.)
+        widget.setSingleStep(.1)
+        widget.valueChanged.connect(self.WeightAction)
+
+
+        self.weight_widget = widget
+
+
+
+    def SetupLayout(self):
+        '''we use a gridlayout'''
+        layout = QGridLayout()
+        layout 
+        layout.addWidget(self.weight_widget, 0, 0) 
+        layout.addWidget(Color("green"), 1, 0) 
+        layout.addWidget(Color("blue"), 0, 1)
+        layout.addWidget(Color("purple"),1,1)
     
-    def index_changed(self,i):
-        print(i)
-        return
+        self.widget = QWidget()
+        self.widget.setLayout(layout)
+        self.setCentralWidget(self.widget)
 
-    def text_changed(self,s):
-        print(s)
-        return
+
+    def WeightAction(self,weight):
+        print(weight)
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
