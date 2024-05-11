@@ -2,6 +2,7 @@
 # read in calories and store it in a csv file with date and time
 # it uses pandas and QT
 
+
 import pandas as PD
 import datetime as dt
 import numpy as np
@@ -16,7 +17,7 @@ class MyCalories(object):
         PD.options.mode.chained_assignment = None 
 
         # before we do anything give your weight
-        self.GetWeight()
+        self.EnterWeight()
         
     def open_file(self): 
 
@@ -47,7 +48,7 @@ class MyCalories(object):
         self.SavePandaFile() # the index=False makes sure there is no empty starting column where the index would be
         return
 
-    def CreateEntry(self):
+    def EnterCalories(self):
         """adds new entry"""
         self.calories = input("give calories")
         self.calories = int(self.calories)
@@ -57,7 +58,7 @@ class MyCalories(object):
         self.my_df.loc[len(self.my_df)]=[self.output[0],self.output[1],self.calories,self.weight]
         self.SavePandaFile()
 
-    def GetWeight(self):
+    def EnterWeight(self):
         self.weight = float(input("what is your weight ?  "))
         return
     
@@ -72,7 +73,7 @@ class MyCalories(object):
         index = PD.DatetimeIndex(self.my_df['time'])
         morning = self.my_df.iloc[index.indexer_between_time('00:00','12:00')]
         #morning = self.my_df.between_time('17:00','17:11',inclusive ='both')
-        print(morning)
+        print("you have eaten {} calories in the morning".format(self.GetSum(morning)))
         return
 
     def GetAfternoon(self):
@@ -81,6 +82,8 @@ class MyCalories(object):
         index = PD.DatetimeIndex(self.my_df['time'])
         afternoon = self.my_df.iloc[index.indexer_between_time('12:01','18:00')]
         #morning = self.my_df.between_time('17:00','17:11',inclusive ='both')
+        print("you have eaten {} calories in the afternoo".format(self.GetSum(afternoon)))
+ 
         print(afternoon)
         return
     
@@ -90,19 +93,23 @@ class MyCalories(object):
         index = PD.DatetimeIndex(self.my_df['time'])
         evening = self.my_df.iloc[index.indexer_between_time('18:01','23:59')]
         #morning = self.my_df.between_time('17:00','17:11',inclusive ='both')
-        print(evening)
+        print("you have eaten {} calories in the morning".format(self.GetSum(evening)))
+       
         return
        
 
     
+    def GetSum(self,mydata):
+        """determines the sum of the calories"""
+        return mydata['calories'].sum()
 
     def GetCurrentCount(self):
         """adds up the current calories for today"""
         now=dt.datetime.now()
         self.temp = temp= self.my_df[self.my_df['day'] == now.strftime("%d/%m/%Y")]
         # now add up all of todays calories
-        mysum = temp['calories'].sum()
-        print("up to now you have eaten {}".format(mysum))
+        #mysum = temp['calories'].sum()
+        print("up to now you have eaten {} calories".format(self.GetSum(temp)))
     
 
         print(temp)
@@ -135,6 +142,6 @@ if __name__  == "__main__":
 
     MyC.open_file()
     MyC.GetMorning()
-    MyC.CreateEntry()
+    MyC.EnterCalories()
     MyC.GetCurrentCount()
     MyC.ChangeCalories()
