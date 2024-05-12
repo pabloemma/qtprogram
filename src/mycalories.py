@@ -14,7 +14,7 @@ class MyCalories(object):
     def __init__(self,filename = None):
         
         self.filename = Path(filename)
-        PD.options.mode.chained_assignment = None 
+        PD.options.mode.chained_assignment = None # remove warings when editing the pandas
 
         # before we do anything give your weight
         self.EnterWeight()

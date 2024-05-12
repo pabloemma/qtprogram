@@ -21,11 +21,14 @@ from PySide6.QtWidgets import (
 )
 
 from layout_colorwidget import Color
+import mycalories as MyC
 
 import os
 import datetime as dt
 from loguru import logger
 import sys
+
+
 
 
 class calcontrol(QMainWindow):
@@ -34,14 +37,25 @@ class calcontrol(QMainWindow):
         super().__init__()
         
 
+        #instantiate the mycalories
+
+
+
         # set title
         self.setWindowTitle("my calories")
 
         #setup the different widgets
-        self.CreateWeightBox()
+        self.CreateWeightBox() # interface for weight entry
+        self.CreateCaloriesBox()
 
 
         self.SetupLayout()
+
+    def GetFilename(self):
+        """ get the name for the calory file"""
+
+
+
 
 
     def CreateWeightBox(self):
@@ -62,16 +76,35 @@ class calcontrol(QMainWindow):
 
         self.weight_widget = widget
 
+        # create the label for weight
+        self.weight_label = QLabel("Enter a weight between {}  and {}" .format(100.,200.))
+
+    def CreateCaloriesBox(self):
+        ''' creates a spinner for the weight entry'''
+
+        widget  =  QDoubleSpinBox()
+        #widget = QLineEdit()
+        widget.setKeyboardTracking(False) # to ensure we only get a final number
+
+        widget.setSingleStep(1.)
+        widget.editingFinished.connect(self.CaloriesAction) #ensures we only get one signal with hitting return
+ 
+
+        self.calories_widget = widget
+        self.calories_label = QLabel("Enter your calories ")
+
 
 
     def SetupLayout(self):
         '''we use a gridlayout'''
         layout = QGridLayout()
         layout 
-        layout.addWidget(self.weight_widget, 0, 0) 
-        layout.addWidget(Color("green"), 1, 0) 
-        layout.addWidget(Color("blue"), 0, 1)
-        layout.addWidget(Color("purple"),1,1)
+        layout.addWidget(self.weight_label, 0, 0) 
+        layout.addWidget(self.weight_widget, 1, 0) 
+        layout.addWidget(self.calories_label, 0, 1) 
+        layout.addWidget(self.calories_widget,1,1) 
+        #layout.addWidget(Color("blue"), 1, 0)
+        #layout.addWidget(Color("purple"),1,1)
     
         self.widget = QWidget()
         self.widget.setLayout(layout)
@@ -80,9 +113,18 @@ class calcontrol(QMainWindow):
 
     
     def WeightAction(self):
-        print(self.weight_widget.value())
+        if(self.weight_widget.value() == 100.):
+            print("you haven't entered anything")
+
+        else:
+            print(self.weight_widget.value())
 
 
+    def CaloriesAction(self):
+        if(self.calories_widget.value() == 0.):
+            print("seriously, no calories?")
+        else:
+            print(self.calories_widget.value())
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
