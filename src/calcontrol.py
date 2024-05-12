@@ -16,12 +16,13 @@ from PySide6.QtWidgets import (
             QMainWindow,
             QDoubleSpinBox,
             QLineEdit,
+            QFileDialog,
             QWidget
 
 )
 
 from layout_colorwidget import Color
-import mycalories as MyC
+import mycalories_qt as MyC
 
 import os
 import datetime as dt
@@ -39,7 +40,10 @@ class calcontrol(QMainWindow):
 
         #instantiate the mycalories
 
-
+        self.GetFilename()
+        #instantiate calories
+        
+        self.MyCal = MyC.MyCalories(filename = self.file_name)
 
         # set title
         self.setWindowTitle("my calories")
@@ -53,7 +57,8 @@ class calcontrol(QMainWindow):
 
     def GetFilename(self):
         """ get the name for the calory file"""
-
+        self.file_name,filter = QFileDialog.getOpenFileName(self,"open caloryfile","/Users/kelin/git/qtprogram/data")
+    
 
 
 

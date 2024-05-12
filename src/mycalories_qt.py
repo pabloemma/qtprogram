@@ -17,7 +17,7 @@ class MyCalories(object):
         PD.options.mode.chained_assignment = None # remove warings when editing the pandas
 
         # before we do anything give your weight
-        self.EnterWeight()
+        #self.EnterWeight()
         
     def open_file(self): 
 
@@ -55,7 +55,14 @@ class MyCalories(object):
         now=dt.datetime.now()
         #self.weight=float(0)
         self.output = [now.strftime("%d/%m/%Y"),now.strftime("%H:%M:%S")]
-        self.my_df.loc[len(self.my_df)]=[self.output[0],self.output[1],self.calories,self.weight]
+        if 'self.weight' not in globals():
+            self.EnterWeight()
+            self.my_df.loc[len(self.my_df)]=[self.output[0],self.output[1],self.calories,self.weight]
+        else:
+            self.my_df.loc[len(self.my_df)]=[self.output[0],self.output[1],self.calories,self.weight]
+           
+        
+        
         self.SavePandaFile()
 
     def EnterWeight(self):
