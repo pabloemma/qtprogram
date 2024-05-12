@@ -104,7 +104,18 @@ class MyCalories(object):
        
         return
        
+    def GetWeight(self):
+        '''check if weight is already in csv file'''
+        now=dt.datetime.now()
+        temp= self.my_df[self.my_df['day'] == now.strftime("%d/%m/%Y")]
+        if temp['weight'].iloc[0] == 0. :
+            self.weight =  self.EnterWeight()
+        else:
+            print(temp['weight'].iloc[0]) # get first entry, requires that first entry has weight
+        # now check for weight:
 
+
+        
     
     def GetSum(self,mydata):
         """determines the sum of the calories"""
@@ -148,7 +159,8 @@ if __name__  == "__main__":
     MyC = MyCalories("/Users/klein/git/qtprogram/data/calories.csv")
 
     MyC.open_file()
-    MyC.GetMorning()
-    MyC.EnterCalories()
-    MyC.GetCurrentCount()
-    MyC.ChangeCalories()
+    #MyC.GetMorning()
+    #MyC.EnterCalories()
+    #MyC.GetCurrentCount()
+    #MyC.ChangeCalories()
+    MyC.GetWeight()

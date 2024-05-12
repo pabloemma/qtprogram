@@ -100,6 +100,7 @@ class calcontrol(QMainWindow):
 
 
 
+
     def SetupLayout(self):
         '''we use a gridlayout'''
         layout = QGridLayout()
