@@ -9,6 +9,7 @@ I will start with an easy example, four widgets in one window
 '''
 
 from PySide6.QtCore import Qt
+from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtWidgets import (
             QApplication,
             QLabel,
@@ -22,7 +23,7 @@ from PySide6.QtWidgets import (
 )
 
 from layout_colorwidget import Color
-import mycalories_qt as MyC
+import MyCalories_qt as MyC
 
 import os
 import datetime as dt
@@ -41,10 +42,8 @@ class calcontrol(QMainWindow):
         #instantiate the mycalories
 
         self.GetFilename()
-        #instantiate calories
-        
-        self.MyCal = MyC.MyCalories(filename = self.file_name)
-
+ 
+ 
         # set title
         self.setWindowTitle("my calories")
 
@@ -57,8 +56,16 @@ class calcontrol(QMainWindow):
 
     def GetFilename(self):
         """ get the name for the calory file"""
+
         self.file_name,filter = QFileDialog.getOpenFileName(self,"open caloryfile","/Users/kelin/git/qtprogram/data")
-    
+        #instantiate calories
+        
+        self.MyCal = MyC.MyCalories_qt(filename = self.file_name)
+
+ 
+        # now read the data
+        self.MyCal.open_file()
+
 
 
 
@@ -132,8 +139,16 @@ class calcontrol(QMainWindow):
         else:
             print(self.calories_widget.value())
 
+    def ShowData(self):
+        ''' shows the calories table'''
+
+        # get the pandas frame from mycalories_qt
+        my_df = self.MyCal.my_df
+        print(my_df)
+        pass
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = calcontrol()
+    window.ShowData()
     window.show()
     app.exec()

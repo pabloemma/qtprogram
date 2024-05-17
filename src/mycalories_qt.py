@@ -9,7 +9,7 @@ import numpy as np
 from pathlib import Path
 from loguru import logger
 
-class MyCalories(object):
+class MyCalories_qt(object):
     
     def __init__(self,filename = None):
         
@@ -31,6 +31,7 @@ class MyCalories(object):
             logger.info("creating file {}".format(self.filename))
             self.CreateFile()
 
+        return
 
     def CreateFile(self):
         '''create calories file'''
@@ -108,10 +109,14 @@ class MyCalories(object):
         '''check if weight is already in csv file'''
         now=dt.datetime.now()
         temp= self.my_df[self.my_df['day'] == now.strftime("%d/%m/%Y")]
-        if temp['weight'].iloc[0] == 0. :
-            self.weight =  self.EnterWeight()
-        else:
-            print(temp['weight'].iloc[0]) # get first entry, requires that first entry has weight
+        try:
+            if temp['weight'].iloc[0] == 0. :
+                self.weight =  self.EnterWeight()
+            else:
+                print(temp['weight'].iloc[0]) # get first entry, requires that first entry has weight
+        except:
+            print("no entries found")
+        
         # now check for weight:
 
 
